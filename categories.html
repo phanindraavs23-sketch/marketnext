@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Categories — MarketRank</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<header class="nav">
+  <a class="brand" href="index.html"><span class="logo">◆</span> Market<span>Rank</span></a>
+  <nav><a href="index.html#leaderboard">Leaderboard</a><a href="categories.html">Categories</a><a href="index.html#how">How It Works</a></nav>
+  <div class="nav-actions"><a class="outline" href="index.html">Home</a></div>
+</header>
+<main class="categories-page">
+  <section class="category-hero">
+    <div class="pill">🔥 Live Category Boards</div>
+    <h1>Choose your <span>category.</span></h1>
+    <p>Every category has its own public ranking. Pick a category to explore the leaders and submit your product to the right board.</p>
+  </section>
+  <section class="category-grid" id="categoryGrid"><div class="loading">Loading categories…</div></section>
+</main>
+<script src="config.js"></script>
+<script>
+const {createClient}=window.supabase; const sb=createClient(window.SUPABASE_URL,window.SUPABASE_ANON_KEY);
+const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function load(){
+ const {data,error}=await sb.from('categories').select('id,name,slug').order('sort_order');
+ if(error){document.getElementById('categoryGrid').innerHTML='<div class="loading">Run the updated supabase.sql first.</div>';return;}
+ const grid=document.getElementById('categoryGrid');
+ const cards=await Promise.all((data||[]).map(async c=>{
+   const {data:p}=await sb.from('profiles').select('display_name,total_contribution,website').eq('category_id',c.id).eq('is_public',true).order('total_contribution',{ascending:false}).limit(3);
+   return `<a class="category-card" href="index.html?category=${encodeURIComponent(c.slug)}#leaderboard"><div class="category-number">${String(c.id).padStart(2,'0')}</div><h2>${esc(c.name)}</h2><p>${p?.length||0} visible listing${p?.length===1?'':'s'} in preview</p>${(p||[]).map((x,i)=>`<div class="category-leader"><span>#${i+1} ${esc(x.display_name)}</span><b>₹${Number(x.total_contribution||0).toLocaleString('en-IN')}</b></div>`).join('')}</a>`;
+ }));
+ grid.innerHTML=cards.join('');
+}
+load();
+</script>
+<script src="visitors.js"></script>
+</body></html>
