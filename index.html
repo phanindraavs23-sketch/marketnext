@@ -3,86 +3,87 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MarketRank — Market Your Way to the Top</title>
+  <meta name="description" content="MarketRank India — claim a rank on the public Indian leaderboard.">
+  <title>MarketRank India — Claim a Rank</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body>
-  <header class="nav">
-    <a class="brand" href="#"><span class="logo">◆</span> Market<span>Rank</span></a>
-    <nav><a href="#leaderboard">Leaderboard</a><a href="categories.html">Categories</a><a href="#submit">Submit Entry</a><a href="#how">How It Works</a></nav>
-    <div class="nav-actions">
-      <span class="visitor-pill" id="visitorCount">Visitors: —</span>
-      <a class="primary" href="checkout.html">Increase Your Rank →</a>
+<body class="outbid-home">
+  <header class="simple-nav">
+    <a class="brand" href="index.html"><span class="logo">◆</span> Market<span>Rank</span></a>
+    <div class="nav-center">
+      <a href="index.html#leaderboard">Daily</a>
+      <a href="categories.html">Categories</a>
+      <a href="index.html#how">How It Works</a>
+    </div>
+    <div class="nav-right">
+      <span class="india-badge">🇮🇳 India only</span>
+      <a class="nav-pill" href="index.html#leaderboard">Leaderboard</a>
     </div>
   </header>
 
   <main>
-    <section class="hero">
-      <div class="hero-copy">
-        <div class="pill">🔥 Live Leaderboard</div>
-        <h1>Market Your Way<br>to the <span>Top.</span></h1>
-        <p>Showcase your profile, brand, or project. Increase your market contribution and climb the public leaderboard.</p>
-        <div class="hero-buttons">
-          <a class="primary big" href="checkout.html">Get Started →</a>
-          <a class="outline big" href="#leaderboard">View Leaderboard</a>
+    <section class="claim-hero">
+      <div class="hero-label">🇮🇳 INDIA'S PUBLIC PRODUCT LEADERBOARD</div>
+      <h1>Claim your <span>#1</span> rank.</h1>
+      <p>Put your Indian product, startup, creator brand, or business on the public board. The higher your contribution, the higher you climb.</p>
+
+      <form id="claimForm" class="claim-box">
+        <div class="claim-title-row">
+          <strong>Claim a rank</strong>
+          <span class="amount-control"><button type="button" id="minus">−</button><b>₹<input id="amount" type="number" min="1" step="50" value="500"></b><button type="button" id="plus">+</button></span>
         </div>
-      </div>
-      <div class="podium" id="podium"></div>
+        <label class="sr-only" for="entryName">Product or brand name</label>
+        <input id="entryName" required maxlength="120" placeholder="Your product, company, creator or brand name">
+        <label class="sr-only" for="entryWebsite">Website</label>
+        <input id="entryWebsite" required type="url" placeholder="https://yourwebsite.com or social profile URL">
+        <div class="claim-grid">
+          <select id="entryCategory" required><option value="">Choose a category</option></select>
+          <select id="entryState" required>
+            <option value="">Choose Indian state / UT</option>
+            <option>Andhra Pradesh</option><option>Arunachal Pradesh</option><option>Assam</option><option>Bihar</option><option>Chhattisgarh</option><option>Goa</option><option>Gujarat</option><option>Haryana</option><option>Himachal Pradesh</option><option>Jharkhand</option><option>Karnataka</option><option>Kerala</option><option>Madhya Pradesh</option><option>Maharashtra</option><option>Manipur</option><option>Meghalaya</option><option>Mizoram</option><option>Nagaland</option><option>Odisha</option><option>Punjab</option><option>Rajasthan</option><option>Sikkim</option><option>Tamil Nadu</option><option>Telangana</option><option>Tripura</option><option>Uttar Pradesh</option><option>Uttarakhand</option><option>West Bengal</option><option>Andaman and Nicobar Islands</option><option>Chandigarh</option><option>Dadra and Nagar Haveli and Daman and Diu</option><option>Delhi</option><option>Jammu and Kashmir</option><option>Ladakh</option><option>Lakshadweep</option><option>Puducherry</option>
+          </select>
+          <input id="entryCity" required maxlength="80" placeholder="City (e.g. Bengaluru)">
+        </div>
+        <button class="claim-button" type="submit">Claim rank →</button>
+        <div id="claimMsg" class="claim-msg"></div>
+        <small>Free listing • Indian entries only • No login required</small>
+      </form>
     </section>
 
-
-    <section class="content entry-section" id="submit">
-      <div class="main-col">
-        <div class="section-head"><h2>Submit Your Indian Listing</h2><span class="live"><i></i> India only</span></div>
-        <div class="table-card entry-card">
-          <p class="entry-note">Listings are limited to businesses, products and creators located in India. Select your Indian city and state while submitting.</p>
-          <form id="entryForm" class="entry-form">
-            <label>Name / Brand<input id="entryName" required maxlength="120" placeholder="Your name or brand"></label>
-            <label>Website / Social<input id="entryWebsite" type="url" required placeholder="https://example.com"></label>
-            <label>Category<select id="entryCategory" required><option value="">Choose a category</option></select></label>
-            <label>State / UT<select id="entryState" required>
-              <option value="">Choose state / UT</option>
-              <option>Andhra Pradesh</option><option>Arunachal Pradesh</option><option>Assam</option><option>Bihar</option><option>Chhattisgarh</option><option>Goa</option><option>Gujarat</option><option>Haryana</option><option>Himachal Pradesh</option><option>Jharkhand</option><option>Karnataka</option><option>Kerala</option><option>Madhya Pradesh</option><option>Maharashtra</option><option>Manipur</option><option>Meghalaya</option><option>Mizoram</option><option>Nagaland</option><option>Odisha</option><option>Punjab</option><option>Rajasthan</option><option>Sikkim</option><option>Tamil Nadu</option><option>Telangana</option><option>Tripura</option><option>Uttar Pradesh</option><option>Uttarakhand</option><option>West Bengal</option><option>Andaman and Nicobar Islands</option><option>Chandigarh</option><option>Dadra and Nagar Haveli and Daman and Diu</option><option>Delhi</option><option>Jammu and Kashmir</option><option>Ladakh</option><option>Lakshadweep</option><option>Puducherry</option></select></label>
-            <label>City<input id="entryCity" required maxlength="80" placeholder="e.g. Bengaluru"></label>
-            <input type="hidden" id="entryCountry" value="India">
-            <button class="primary big" type="submit">Submit Listing →</button>
-            <div id="entryMsg" class="entry-msg"></div>
-          </form>
+    <section class="daily-section" id="leaderboard">
+      <div class="section-title-row">
+        <div>
+          <div class="eyebrow">LIVE BOARD</div>
+          <h2>Today's ranking</h2>
         </div>
+        <div class="period-switch"><button class="active" data-period="today">Today</button><button data-period="all">All time</button></div>
       </div>
+      <div class="ranking-list" id="rows"><div class="ranking-empty">Loading Indian rankings…</div></div>
+      <div class="board-actions"><a href="categories.html">Explore all categories →</a><a href="index.html#leaderboard">See all rankings →</a></div>
     </section>
 
-    <section class="content" id="leaderboard">
-      <div class="main-col">
-        <div class="section-head">
-          <div class="tabs"><button class="active" data-period="all">All Time</button><button data-period="today">Today</button></div>
-          <span class="live"><i></i> Live updates</span>
-        </div>
-        <div class="table-card">
-          <div class="thead"><span>#</span><span>User</span><span>Amount</span><span>Website / Social</span><span>Action</span></div>
-          <div id="rows"><div class="loading">Loading leaderboard…</div></div>
-        </div>
-      </div>
+    <section class="stats-strip" id="how">
+      <div><strong id="visitorCount">—</strong><span>visitors</span></div>
+      <div><strong id="productCount">—</strong><span>Indian products</span></div>
+      <div><strong id="categoryCount">—</strong><span>categories</span></div>
+      <div><strong>₹</strong><span>Indian marketplace</span></div>
+    </section>
 
-      <aside>
-        <div class="market-card">
-          <div class="market-icon">↗</div>
-          <h2>Increase Your Rank</h2>
-          <p>Add to your market contribution and climb higher on the leaderboard.</p>
-          <div class="amount"><span>₹</span><input id="amount" type="number" min="1" value="100"><button id="minus">−</button><button id="plus">+</button></div>
-          <button class="primary wide" id="marketBtn">Go to Market →</button>
-          <small>Secure payment • Instant updates</small>
-        </div>
-        <div class="side-card"><h3>🏆 Your Rank</h3><div id="yourRank" class="rank-box">Make a contribution to enter the public leaderboard.</div></div>
-        <div class="side-card" id="how"><h3>❔ How It Works</h3>
-          <ol><li><b>Enter your amount</b><small>Choose how much you want to contribute.</small></li>
-          <li><b>Complete the payment</b><small>Connect your payment provider later.</small></li>
-          <li><b>Climb the ranks</b><small>Your verified contribution updates your position.</small></li></ol>
-        </div>
-      </aside>
+    <section class="how-section">
+      <div><div class="eyebrow">HOW IT WORKS</div><h2>Get discovered. Climb the board.</h2></div>
+      <div class="how-cards">
+        <article><b>01</b><h3>Add your listing</h3><p>Enter your product or brand, website, category, city and Indian state. No account required.</p></article>
+        <article><b>02</b><h3>Choose your contribution</h3><p>Set the amount you want to use for ranking and continue to the secure checkout.</p></article>
+        <article><b>03</b><h3>Climb publicly</h3><p>Your verified contribution determines your position on the MarketRank leaderboard.</p></article>
+      </div>
     </section>
   </main>
+
+  <footer class="simple-footer">
+    <span>© MarketRank India</span>
+    <span>Public rankings for Indian products, brands and creators.</span>
+  </footer>
 
   <script src="config.js"></script>
   <script src="app.js"></script>
